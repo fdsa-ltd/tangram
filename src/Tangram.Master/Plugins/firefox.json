@@ -1,0 +1,5 @@
+{
+  "Name": "firefox",
+  "FileName": "D:\\Program\\firefox\\firefox.exe",
+  "Arguments": [ "-url {url}", "-safe-mode", "--no-remote" ]
+}
