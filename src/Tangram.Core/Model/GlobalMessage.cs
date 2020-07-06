@@ -7,38 +7,50 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 
 namespace Tangram.Core
 {
     public class GlobalMessage
     {
         public string From;
+        public string To;
         public GlobalMessageType Type;
         public object[] Data;
 
-        public static GlobalMessage Get(string data)
+        public static GlobalMessage Parse(string content)
         {
-            return JsonConvert.DeserializeObject<GlobalMessage>(data);
+            try
+            {
+                return JsonConvert.DeserializeObject<GlobalMessage>(content);
+            }
+            catch (Exception ex)
+            {
+                FileManager.Loger.WriteLog("error", ex);
+                return null;
+            }
         }
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            try
+            {
+                return JsonConvert.SerializeObject(this, Formatting.Indented);
+            }
+            catch (Exception ex)
+            {
+                FileManager.Loger.WriteLog("error", ex);
+                return string.Empty;
+            }
         }
     }
-
     public enum GlobalMessageType
     {
-        None = 0,
-        Exec,
         Open,
-        Close,
         Find,
+        Invoke,
         StoreGet,
         StoreSet,
         NQ,
         MQ,
-    }
- 
-
+    } 
 }

@@ -11,7 +11,7 @@ namespace Tangram.Core
     {
         string Text { get; set; }
         IntPtr Handle { get; }
-        void Init(string name, string url, Features features);
+        void Init(  Features features);
 
         event EventCallback OnMessage;
 
@@ -31,9 +31,9 @@ namespace Tangram.Core
         /// <summary>
         /// 设置窗口在屏幕上的绝对位置
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        void site(int x, int y);
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        void site(int left, int top);
         /// <summary>
         /// 设置窗口的大小
         /// </summary>
@@ -53,8 +53,8 @@ namespace Tangram.Core
         /// <summary>
         /// 窗体的状态
         /// </summary>
-        /// <param name="status"></param>
-        void mode(int status);
+        /// <param name="mode"></param>
+        void mode(int mode);
 
     }
 }

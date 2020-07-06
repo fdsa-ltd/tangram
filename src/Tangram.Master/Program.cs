@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.Pkcs;
 using System.Windows.Forms;
 using Tangram.Core;
 
@@ -15,13 +17,17 @@ namespace Tangram.Master
         [STAThread]
         static void Main(string[] args)
         {
-            if (!SoftRegister.IsRegister())
+            if (args == null || args.Length == 0)
             {
-                FormRegister register = new FormRegister();
-                register.ShowDialog();
-                return;
+                args = new string[] { "" };
             }
-            
+            //if (!SoftRegister.IsRegister())
+            //{
+            //    FormRegister register = new FormRegister();
+            //    register.ShowDialog();
+            //    return;
+            //}
+
             var current = Process.GetCurrentProcess().Id;
             foreach (var item in Process.GetProcessesByName("Tangram"))
             {
@@ -30,6 +36,20 @@ namespace Tangram.Master
                     item.Kill();
                 }
             }
+
+            var path = Path.Combine(Application.StartupPath, "pid.txt");
+            var result = File.ReadAllLines(path).Select(m =>
+            {
+                var pid = int.Parse(m);
+                var p =  Process.GetProcessById(pid);
+
+                if (p != null)
+                {
+                    p.Kill();
+                }
+                return pid;
+            });
+            File.Delete(path);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain(args.FirstOrDefault()));

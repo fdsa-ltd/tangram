@@ -1,136 +1,56 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{29035E13-1F2B-4A1B-9103-DD69B646FED0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Tangram.Master</RootNamespace>
-    <AssemblyName>Tangram</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ProjectGuid>{5ACFBB9D-C543-4551-8A11-E5C96DD0EC15}</ProjectGuid>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>bin\Debug\</OutputPath>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Compile Remove="BuiltinBrowser\**" />
+    <Compile Remove="InnerBrowser\**" />
+    <Compile Remove="PluginBrowser\**" />
+    <EmbeddedResource Remove="BuiltinBrowser\**" />
+    <EmbeddedResource Remove="InnerBrowser\**" />
+    <EmbeddedResource Remove="PluginBrowser\**" />
+    <None Remove="BuiltinBrowser\**" />
+    <None Remove="InnerBrowser\**" />
+    <None Remove="PluginBrowser\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="FormRegister.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormRegister.Designer.cs">
-      <DependentUpon>FormRegister.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormMain.Designer.cs">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PluginBrowser\FormForScript.cs" />
-    <Compile Include="PluginBrowser\GlobalForScript.cs" />
-    <Compile Include="PluginBrowser\OuterBrowser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PluginBrowser\StoreForScript.cs" />
-    <Compile Include="BuiltinBrowser\FormForScript.cs" />
-    <Compile Include="BuiltinBrowser\GlobalForScript.cs" />
-    <Compile Include="BuiltinBrowser\OuterBrowser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BuiltinBrowser\StoreForScript.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoftRegister.cs" />
-    <Compile Include="FormBrowser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormBrowser.Designer.cs">
-      <DependentUpon>FormBrowser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InnerBrowser\FormForScript.cs" />
-    <Compile Include="InnerBrowser\GlobalForScript.cs" />
-    <Compile Include="InnerBrowser\InnerBrowser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InnerBrowser\StoreForScript.cs" />
-    <Compile Include="WindowHelper.cs" />
-    <Compile Include="WindowMessageManager.cs" />
-    <EmbeddedResource Include="FormRegister.resx">
-      <DependentUpon>FormRegister.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormMain.resx">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormBrowser.resx">
-      <DependentUpon>FormBrowser.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.manifest" />
-    <None Include="app.config" />
+    <ProjectReference Include="..\Tangram.Core\Tangram.Core.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Content Include="favicon.ico" />
+    <None Update="app.tg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plugins\edge.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plugins\chrome.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plugins\firefox.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plugins\ie.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plugins\ie64.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="static\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="static\tg.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Tangram.Core\Tangram.Core.csproj">
-      <Project>{880bea12-31d4-46dd-9ab4-596c5650f55c}</Project>
-      <Name>Tangram.Core</Name>
-    </ProjectReference>
+    <Folder Include="static\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

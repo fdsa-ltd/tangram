@@ -15,7 +15,7 @@ namespace Tangram.Core
             {
                 return 0;
             }
-            if (value[index]==null)
+            if (value[index] == null)
             {
                 return 0;
             }
@@ -53,11 +53,27 @@ namespace Tangram.Core
             {
                 return string.Empty;
             }
-            if (value[index]==null)
+            if (value[index] == null)
             {
                 return string.Empty;
             }
             return value[index].ToString();
+        }
+        public static List<string> GetStrings(this object[] value, int from)
+        {
+            List<string> list = new List<string>();
+            for (int i = from   ; i < value.Length; i++)
+            {
+                if ( value[from] == null)
+                {
+                    list.Add( string.Empty);
+                }
+                else
+                {
+                    list.Add(value[from].ToString());
+                }
+            }
+            return list;
         }
         public static Dictionary<string, string> SplitString(string settingString)
         {

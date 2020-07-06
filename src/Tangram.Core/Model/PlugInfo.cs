@@ -8,6 +8,7 @@ namespace Tangram.Core
         public string FileName { get; set; }
         public string[] Arguments { get; set; }
 
+        public PlugType Type { get; set; }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
@@ -20,8 +21,15 @@ namespace Tangram.Core
             }
             catch (Exception ex)
             {
+                FileManager.Loger.WriteLog("error", ex);
                 return null;
             }
         }
+    }
+    public enum PlugType
+    {
+        Builtin,
+        OuterBrowser,
+        OuterForm,
     }
 }

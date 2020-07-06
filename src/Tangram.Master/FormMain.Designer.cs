@@ -42,12 +42,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Tsmi_Exit});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 52);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(157, 52);
             // 
             // Tsmi_Exit
             // 
             this.Tsmi_Exit.Name = "Tsmi_Exit";
-            this.Tsmi_Exit.Size = new System.Drawing.Size(160, 48);
+            this.Tsmi_Exit.Size = new System.Drawing.Size(156, 48);
             this.Tsmi_Exit.Text = "退出";
             this.Tsmi_Exit.Click += new System.EventHandler(this.Tsmi_Exit_Click);
             // 
@@ -58,15 +58,15 @@
             this.notifyIcon1.Text = "唐图大屏专家";
             this.notifyIcon1.Visible = true;
             // 
-            // MainForm
+            // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1771, 1248);
+            this.ClientSize = new System.Drawing.Size(1882, 1454);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.Name = "MainForm";
+            this.Name = "FormMain";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

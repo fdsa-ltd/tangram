@@ -47,7 +47,7 @@ namespace Tangram.Core
             }
             catch (Exception ex)
             {
-                Log.WriteLog("文件加密失败", ex.ToString());
+                FileManager.Loger.WriteLog("文件加密失败", ex );
                 return false;
             }
         }
@@ -80,7 +80,7 @@ namespace Tangram.Core
             }
             catch (Exception ex)
             {
-                Log.WriteLog("文件解密失败", ex.ToString());
+                FileManager.Loger.WriteLog("文件解密失败", ex );
                 return false;
             }
         }
@@ -106,7 +106,7 @@ namespace Tangram.Core
             }
             catch (Exception ex)
             {
-                Log.WriteLog("文件解密失败", ex.ToString());
+                FileManager.Loger.WriteLog("文件解密失败", ex);
                 return string.Empty;
             }
         }

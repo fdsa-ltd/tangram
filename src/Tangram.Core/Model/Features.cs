@@ -28,6 +28,22 @@ namespace Tangram.Core
             }
             return defaultValue;
         }
+        public void Set(string key, string value)
+        {
+            if (this.ContainsKey(key))
+            {
+                this[key] = value;
+            }
+            else
+            {
+                this.Add(key, value);
+            }
+        }
+
+        public void Set(string key, int value)
+        {
+            this.Set(key, value.ToString());
+        }
         public int GetInt(string key, int defaultValue = 0)
         {
             var value = this.Get(key);

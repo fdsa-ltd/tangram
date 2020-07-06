@@ -15,15 +15,32 @@ namespace Tangram.Core
     public class FormMessage
     {
         public string From;
+        public string To;
         public FormMessageType Type;
         public object[] Data;
-        public static FormMessage Get(string data)
+        public static FormMessage Parse(string content)
         {
-            return JsonConvert.DeserializeObject<FormMessage>(data);
+            try
+            {
+                return JsonConvert.DeserializeObject<FormMessage>(content);
+            }
+            catch (Exception ex)
+            {
+                FileManager.Loger.WriteLog("error", ex);
+                return null;
+            }
         }
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            try
+            {
+                return JsonConvert.SerializeObject(this, Formatting.Indented);
+            }
+            catch (Exception ex)
+            {
+                FileManager.Loger.WriteLog("error", ex);
+                return string.Empty;
+            }
         }
     }
     public enum FormMessageType

@@ -32,7 +32,7 @@ namespace Tangram.Core
             }
             catch (Exception ex)
             {
-                Log.WriteLog("DES加密失败", ex.ToString());
+                FileManager.Loger.WriteLog("DES加密失败", ex );
                 return string.Empty;
             }
 
@@ -60,7 +60,7 @@ namespace Tangram.Core
             }
             catch (Exception ex)
             {
-                Log.WriteLog("DES解密失败", ex.ToString());
+                FileManager.Loger.WriteLog("DES解密失败", ex );
                 return string.Empty;
             }
         }

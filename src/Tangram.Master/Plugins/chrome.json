@@ -1,5 +1,9 @@
 {
   "Name": "chrome",
   "FileName": "D:\\Program\\Chrome\\chrome.exe",
-  "Arguments": [ "--kiosk", "--user-data-dir=D:\\Program\\Chrome\\Cache\\{name}", "{url}" ]
+  "Arguments": [   
+    "--kiosk",
+    //"--user-data-dir=D:\\Program\\Chrome\\Cache\\{name}",
+    "{url}"
+  ]
 }

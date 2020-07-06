@@ -1,0 +1,3 @@
+http://localhost:5555/ -> type=edge; name:bing 
+http://localhost:5555/ -> type=ie;name=edge;left:500;
+

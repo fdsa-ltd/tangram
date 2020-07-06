@@ -9,7 +9,7 @@ using Tangram.IEBrowser;
 
 namespace Tangram.PluginBrowser
 {
-    public partial class OuterBrowser : FormBrowser
+    public partial class OuterBrowser : BuiltinForm
     {
         #region ctor 
         private Process program = new Process();
@@ -81,7 +81,7 @@ namespace Tangram.PluginBrowser
                 type = "exec",
                 data = new object[] { script }
             };
-            ScreenManager.External.SendToAsync(message.ToString(), this.Text);
+            //ScreenManager.External.SendToAsync(message.ToString(), this.Text);
 
         }
         public override void close()
@@ -99,7 +99,7 @@ namespace Tangram.PluginBrowser
         public static extern bool ReleaseCapture();
         [DllImport("user32.dll")]
         public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
-        const int WM_COPYDATA = 0x004A;
+ 
         const int WM_SYSCOMMAND = 0x0112;
         const int WM_NCHITTEST = 0x0084;
         const int SC_MOVE = 0xF010;

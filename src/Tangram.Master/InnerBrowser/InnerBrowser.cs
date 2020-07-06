@@ -9,7 +9,7 @@ using Tangram.Master;
 
 namespace Tangram.IEBrowser
 {
-    public class InnerBrowser : FormBrowser, IFormBrowser
+    public class InnerBrowser : BuiltinForm, IFormBrowser
     {
         private readonly WebBrowser webBrowser;
         public InnerBrowser()
@@ -44,7 +44,6 @@ namespace Tangram.IEBrowser
             catch (Exception ex)
             {
                 Log.WriteLog(string.Format("窗体：{0},调用方法：{1} 出错，具体如下：", this.Text, "IEBrowser.exec()"), ex.ToString());
-                base.RaiseEvent(CallbackType.Error);
             }
         }
         public override void Init(string name, string url, Features features)
