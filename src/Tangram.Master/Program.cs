@@ -33,23 +33,28 @@ namespace Tangram.Master
             {
                 if (current != item.Id)
                 {
+                    var info = item.MainModule.FileName;
                     item.Kill();
                 }
             }
 
             var path = Path.Combine(Application.StartupPath, "pid.txt");
-            var result = File.ReadAllLines(path).Select(m =>
+            if (File.Exists(path))
             {
-                var pid = int.Parse(m);
-                var p =  Process.GetProcessById(pid);
-
-                if (p != null)
+                var result = File.ReadAllLines(path).Select(m =>
                 {
-                    p.Kill();
-                }
-                return pid;
-            });
-            File.Delete(path);
+                    var pid = int.Parse(m);
+                    var p = Process.GetProcessById(pid);
+
+                    if (p != null)
+                    {
+                        p.Kill();
+                    }
+                    return pid;
+                });
+                File.Delete(path);
+
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain(args.FirstOrDefault()));

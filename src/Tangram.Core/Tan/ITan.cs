@@ -11,6 +11,9 @@ namespace Tangram.Core
     {
         IntPtr Handle { get; }
         int Init();
+/// <summary>
+/// 内置
+/// </summary>
         event FormEventCallback OnMessage;
         void Invoke(FormMessage message);
     }

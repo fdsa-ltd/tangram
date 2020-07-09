@@ -111,13 +111,20 @@ namespace Tangram.Core
                 }
                 var plugin = this.plugins[type];
                 ITan browser;
-                if (plugin.Type == PlugType.Builtin)
+                switch (plugin.Type)
                 {
-                    browser = new BuiltinTan(features, this.mainForm);
-                }
-                else
-                {
-                    browser = new OuterTan(features);
+                    case PlugType.Builtin:
+                        browser = new BuiltinTan(features);
+                        break;
+                    case PlugType.Plugin:
+                        browser = new PluginTan(features, this.mainForm);
+                        break;
+                    case PlugType.Outer:
+                        browser = new OuterTan(features);
+                        break;
+                    default:
+                        //MessageBox.Show("浏览器数据过多", "消息");
+                        return null;
                 }
                 browser.OnMessage += FormEventHandler;
                 var width = features.GetInt("width", this.ScreenWidth);
