@@ -50,12 +50,24 @@ namespace Tangram.Core.Event
         {
             this.websocket.RegisterCallback(eventCallback);
         }
-        public Task SendToAsync(string payload, string name)
+        public string Send(string to, MessageType type, params object[] data)
         {
-            return this.websocket.SendToAsync(payload, name);
-        }  /// <summary>
-           /// Defines a very simple chat server
-           /// </summary>
+            var from = DateTime.Now.Ticks.ToString();
+            WebMessage message = new WebMessage()
+            {
+                from = from,
+                to = to,
+                type = type.ToString(),
+                data = data,
+            };
+            this.websocket.SendToAsync(message.ToString(), to).Wait();
+
+            return string.Empty;
+
+        }
+        /// <summary>
+        /// Defines a very simple chat server
+        /// </summary>
         class WebSocketServer : WebSocketModule
         {
             GlobalEventCallback eventCallback;
@@ -75,19 +87,19 @@ namespace Tangram.Core.Event
                 {
                     var data = Encoding.GetString(buffer);
                     var message = WebMessage.Parse(data);
-                   
+
                     var gm = new GlobalMessage()
                     {
                         From = message.from,
                         To = message.to,
-                        Type = Enum.Parse<GlobalMessageType>(message.type,true),
+                        Type = Enum.Parse<GlobalMessageType>(message.type, true),
                         Data = message.data,
                     };
-                    this.eventCallback(gm );
+                    this.eventCallback(gm);
                 }
                 return Task.Run(() =>
                 {
-                   
+
                 });
             }
             object locker = new object();
@@ -105,7 +117,7 @@ namespace Tangram.Core.Event
                         this.clients.Add(title, context);
                     }
                 }
-               
+
                 return base.OnClientConnectedAsync(context);
             }
 

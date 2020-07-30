@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,26 +17,21 @@ namespace Tangram.Core
     public class DefaultTan : ITan
     {
         readonly Form form;
-        public DefaultTan( Form form)
+        public DefaultTan(Form form)
         {
             this.form = form;
-            this.OnMessage = new FormEventCallback(this.Window_EventCallback); 
+            this.OnMessage = new FormEventCallback(this.Window_EventCallback);
             this.form.FormClosed += Form_FormClosed;
         }
 
         private void Form_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.OnMessage(new FormMessage()
-            {
-                From = this.form.Text,
-                To =this.form.Text, 
-                Type = FormMessageType.Close
-            });
+            //todo
         }
 
-        public int Init()
+        public int InitProcess()
         {
-            return 0 ;
+            return Process.GetCurrentProcess().Id;
         }
         private void Window_EventCallback(FormMessage message)
         {
@@ -65,8 +61,10 @@ namespace Tangram.Core
                 case FormMessageType.Mode:
                     break;
                 case FormMessageType.Exec:
-                     break;
+                    MessageBox.Show("当前窗口不支持exec方法");
+                    break;
                 case FormMessageType.Refresh:
+                    MessageBox.Show("当前窗口不支持refresh方法");
                     break;
                 default:
                     break;
@@ -77,7 +75,7 @@ namespace Tangram.Core
         public IntPtr Handle => this.form.Handle;
 
         public event FormEventCallback OnMessage;
-           
+
         public void Invoke(FormMessage message)
         {
             this.OnMessage.Invoke(message);

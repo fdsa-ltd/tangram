@@ -3,27 +3,15 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<UseWindowsForms>true</UseWindowsForms>
-		<!-- 发布平台 -->
+		<!--<UseWindowsForms>true</UseWindowsForms>
+		--><!-- 发布平台 --><!--
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-		<!-- 是否单个exe -->
+		--><!-- 是否单个exe --><!--
 		<PublishSingleFile>true</PublishSingleFile>
 		<PublisherName>Tangram</PublisherName>
-		<PublishTrimmed>true</PublishTrimmed>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Remove="BuiltinBrowser\**" />
-		<Compile Remove="InnerBrowser\**" />
-		<Compile Remove="PluginBrowser\**" />
-		<EmbeddedResource Remove="BuiltinBrowser\**" />
-		<EmbeddedResource Remove="InnerBrowser\**" />
-		<EmbeddedResource Remove="PluginBrowser\**" />
-		<None Remove="BuiltinBrowser\**" />
-		<None Remove="InnerBrowser\**" />
-		<None Remove="PluginBrowser\**" />
-	</ItemGroup>
-
+		<PublishTrimmed>true</PublishTrimmed>-->
+	</PropertyGroup> 
+	 
 	<ItemGroup>
 		<ProjectReference Include="..\Tangram.Core\Tangram.Core.csproj" />
 	</ItemGroup>

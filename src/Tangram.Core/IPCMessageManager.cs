@@ -136,16 +136,15 @@ namespace Tangram.Core.Event
             }
         }
 
-        public static string Send(IntPtr hWnd, MessageType type, string title, params object[] data)
+        public static string Send(IntPtr hWnd, MessageType type, params object[] data)
         {
             return Send(hWnd, new EventMessage()
             {
-                From = title,
                 Type = type,
                 Data = data
             });
         }
-        public static GlobalMessage GetFormMessage(Message m)
+        public static EventMessage GetFormMessage(Message m)
         {
             var data = string.Empty;
             try
@@ -176,7 +175,7 @@ namespace Tangram.Core.Event
             {
                 return null;
             }
-            return GlobalMessage.Parse(data);
+            return EventMessage.Parse(data);
         }
 
         /// <summary>

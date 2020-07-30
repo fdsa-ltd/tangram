@@ -9,9 +9,8 @@ namespace Tangram.Core
 {
     public interface IFormBrowser
     {
-        string Text { get; set; }
+        IntPtr GlobalHandle { get; }
         IntPtr Handle { get; }
-        void Init(  Features features);
 
         event EventCallback OnMessage;
 

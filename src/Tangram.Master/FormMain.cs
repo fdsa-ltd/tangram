@@ -22,7 +22,7 @@ namespace Tangram.Master
         private readonly GlobalEventCallback OnMessage;
         private void MainForm_Load(object sender, EventArgs e)
         {
-             var pluginPath = Path.Combine(Application.StartupPath, "Plugins");
+            var pluginPath = Path.Combine(Application.StartupPath, "Plugins");
             if (!Directory.Exists(pluginPath))
             {
                 Directory.CreateDirectory(pluginPath);
@@ -125,7 +125,8 @@ namespace Tangram.Master
 
             if (message != null)
             {
-                this.OnMessage(message);
+                var msg = new GlobalMessage() { From = message.Data.GetString(0), To = message.Data.GetString(1), Data = message.Data.GetStrings(2).ToArray() };
+                this.OnMessage(msg);
             }
             base.WndProc(ref m);
         }

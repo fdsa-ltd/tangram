@@ -31,18 +31,18 @@ namespace Tangram.Core
         /// <summary>
         /// 默认的主应用程序，负责全局的事件侦听
         /// </summary>
-        Default = -1,
+        Default = -100,
         /// <summary>
         /// 内置受控窗口使用windows 消息通知
         /// </summary>
-        Builtin = 0,
+        Builtin = -1,
         /// <summary>
         /// 外置使用受控窗口的应用程序
         /// </summary>
-        Plugin = 1,
+        Plugin = 0,
         /// <summary>
         /// 外部的不受控窗口的应用程序
         /// </summary>
-        Outer = 2,
+        Outer = 1,
     }
 }

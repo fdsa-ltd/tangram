@@ -3,11 +3,11 @@
   "FileName": "D:\\Program\\msedge\\msedge.exe",
   "Arguments": [
     "--kiosk",
-    "--disk-cache-dir=D:\\Program\\Chrome\\DiskCache",
-    "--user-data-dir=D:\\Program\\Chrome\\DiskCache\\{name}",
-    "--no-first-run",
-    "--start-maximized",
-    "--process-per-tab",
+    //"--disk-cache-dir=D:\\Program\\Chrome\\DiskCache",
+    //"--user-data-dir=D:\\Program\\Chrome\\DiskCache\\{name}",
+    //"--no-first-run",
+    //"--start-maximized",
+    //"--process-per-tab",
     "{url}"
   ] 
 }

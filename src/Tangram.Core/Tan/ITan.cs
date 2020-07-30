@@ -9,11 +9,14 @@ namespace Tangram.Core
 {
     public interface ITan
     {
+        /// <summary>
+        /// 控制句柄
+        /// </summary>
         IntPtr Handle { get; }
-        int Init();
-/// <summary>
-/// 内置
-/// </summary>
+        int InitProcess();
+        /// <summary>
+        /// 内置
+        /// </summary>
         event FormEventCallback OnMessage;
         void Invoke(FormMessage message);
     }

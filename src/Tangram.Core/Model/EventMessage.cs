@@ -13,7 +13,7 @@ namespace Tangram.Core
 {
     public class EventMessage
     {
-        public string From;
+      
         public MessageType Type;
         public object[] Data;
         public override string ToString()

@@ -2,7 +2,6 @@
   "Name": "ie",
   "FileName": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
   "Arguments": [
-
     "-e",
     "-k",
     "-new",

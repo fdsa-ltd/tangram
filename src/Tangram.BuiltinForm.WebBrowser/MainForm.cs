@@ -32,7 +32,7 @@ namespace Tangram.Builtin.WebBrowser
             this.webBrowser.IsWebBrowserContextMenuEnabled = false;
             this.webBrowser.WebBrowserShortcutsEnabled = false;
             this.webBrowser.ScrollBarsEnabled = false;
-            this.webBrowser.ObjectForScripting = new GlobalForScript(this);
+            this.webBrowser.ObjectForScripting = new GlobalForScript(this.GlobalHandle,this.Handle);
             this.Controls.Add(this.webBrowser);
             this.webBrowser.Navigate("https://baidu.com");
         }

@@ -10,40 +10,33 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Tangram.Core.Event;
 
 namespace Tangram.Core
 {
     public class PluginTan : ITan
     {
-        private readonly Form form;
-        private readonly Form mainForm;
         private readonly Features features;
+        private readonly Process process;
 
-        private readonly System.Diagnostics.Process program;
+        private readonly Form form;
         public PluginTan(Features features, Form form)
         {
-            this.form = new Form();
-            this.mainForm = form;
-            this.OnMessage = new FormEventCallback(this.Window_EventCallback);
             this.features = features;
-            this.program = new System.Diagnostics.Process();
+            this.process = new Process();
+            this.OnMessage = new FormEventCallback(this.Window_EventCallback);
+            this.form = new Form();
+            this.form.FormBorderStyle = FormBorderStyle.None;
+            this.form.StartPosition = FormStartPosition.Manual;
+            this.form.WindowState = FormWindowState.Normal;
             this.form.FormClosed += Form_FormClosed;
         }
+        public IntPtr Handle { get; set; }
 
-        private void Form_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            var fm = new FormMessage()
-            {
-                From = this.features.Get("name"),
-                To = this.features.Get("name"),
-                Type = FormMessageType.Close,
-            };
-            //this.OnMessage.Invoke(fm);
-        }
-        const UInt32 SWP_SHOWWINDOW = 0x0040;
-        const UInt32 SWP_HIDEWINDOW = 0x0080;
-        public int Init()
+        public event FormEventCallback OnMessage;
+
+        public int InitProcess()
         {
             var fileName = this.features.Get("fileName");
             var url = this.features.Get("url");
@@ -51,6 +44,8 @@ namespace Tangram.Core
             var tail = string.Empty;
 
             var name = this.features.Get("name");
+            this.form.Text = name;
+
             if (index > 0)
             {
                 tail = url.Substring(index);
@@ -67,21 +62,17 @@ namespace Tangram.Core
 
             var args = this.features.Get("args").Replace("{url}", url).Replace("{name}", name);
             var workspace = this.features.Get("workspace", Application.StartupPath);
-            this.program.StartInfo.FileName = fileName;
-            this.program.StartInfo.Arguments = args;
-            this.program.StartInfo.WorkingDirectory = workspace;
-        this.program.StartInfo.WindowStyle =  ProcessWindowStyle.Maximized;
-    
-            this.program.Start();
-            //this.program.WaitForInputIdle();
-            //加载当前窗口样式
-            this.form.FormBorderStyle = FormBorderStyle.None;
-            //this.TransparencyKey = Color.Blue;
-            //this.BackColor = Color.Blue;
+            this.process.StartInfo.FileName = fileName;
+            this.process.StartInfo.Arguments = args;
+            this.process.StartInfo.WorkingDirectory = workspace;
+            this.process.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+            this.process.Start();
+            this.process.WaitForInputIdle();
+
+            this.Handle = this.process.MainWindowHandle;
+
             var countDown = 1000;
-            var pid = this.program.Id;
-            var hWnd = this.program.MainWindowHandle;
-            while (hWnd == IntPtr.Zero)
+            while (this.Handle == IntPtr.Zero)
             {
                 if (countDown < 0)
                 {
@@ -89,29 +80,27 @@ namespace Tangram.Core
                 }
                 countDown--;
                 Thread.Sleep(100);
-                hWnd = System.Diagnostics.Process.GetProcessById(pid).MainWindowHandle;
+                this.Handle = Process.GetProcessById(this.process.Id).MainWindowHandle;
             }
-            SetParent(hWnd, this.form.Handle);
-
-            //改变尺寸
-            this.form.Size = new Size(this.features.GetInt("width"), this.features.GetInt("height"));
-            this.form.Location = new Point(this.features.GetInt("left"), this.features.GetInt("top"));
-            this.form.Text = name;
-            this.form.BackColor = Color.Red;
-            WindowHelper.SetWindowPos(hWnd, 0, this.form.Location.X, this.form.Location.Y,this.form.Size.Width,this.form.Size.Height, SWP_SHOWWINDOW);
-            var parent = ScreenManager.External.Find(this.features.Get("parent"));
+            //加载当前窗口样式
+ 
+            SetParent(this.Handle, this.form.Handle);
+            var parent = this.features.Get("parent");
             if (parent != null)
             {
-                WindowHelper window = new WindowHelper(parent.Handle);
+                WindowHelper window = new WindowHelper(parent);
                 window.ShowChild(this.form);
             }
             else
             {
                 this.form.Show();
             }
+            //改变尺寸
+            this.form.Size = new Size(this.features.GetInt("width"), this.features.GetInt("height"));
+            this.form.Location = new Point(this.features.GetInt("left"), this.features.GetInt("top"));
+            //WindowHelper.SetWindowPos(this.Handle, 0, 0, 0, 0, 0, SWP_SHOWWINDOW);
 
-
-            return pid;
+            return this.process.Id;
         }
         private void Window_EventCallback(FormMessage message)
         {
@@ -120,19 +109,20 @@ namespace Tangram.Core
                 case FormMessageType.None:
                     break;
                 case FormMessageType.Show:
-                    var parent = ScreenManager.External.Find(message.Data.GetString(0));
-                    if (parent != null)
-                    {
-                        WindowHelper window = new WindowHelper(parent.Handle);
-                        window.ShowChild(this.form);
-                    }
-                    else
+                    var parent = message.Data.GetString(0);
+                    if (string.IsNullOrEmpty(parent))
                     {
                         this.form.Hide();
                         this.form.Show(null);
                     }
+                    else
+                    {
+                        WindowHelper window = new WindowHelper(parent);
+                        window.ShowChild(this.form);
+                    }
                     break;
                 case FormMessageType.Close:
+                    this.process.Kill(true);
                     this.form.Close();
                     break;
                 case FormMessageType.Hide:
@@ -149,23 +139,26 @@ namespace Tangram.Core
                     this.form.Location = new Point(left, right);
                     break;
                 case FormMessageType.Mode:
-                    break;
-                case FormMessageType.Exec:
-                    var channel = this.features.Get("channel", "rpc");
-                    switch (channel)
+                    var status = message.Data.GetInt(0);
+                    switch (status)
                     {
-                        case "rpc":
-                            RPCMessageManager.External.SendToAsync(message.Data.GetString(0), message.From);
+                        case 0:
+                            this.form.Show();
                             break;
-                        case "ipc":
-                            IPCMessageManager.Send(this.program.MainWindowHandle, MessageType.Exec, "", message.Data);
+                        case 1:
+                            this.form.ShowDialog();
                             break;
                         default:
-
+                            this.form.TopLevel = true;
+                            this.form.TopMost = true;
                             break;
                     }
                     break;
+                case FormMessageType.Exec:
+                    RPCMessageManager.External.Send(message.To, MessageType.Exec, message.Data.GetString(0));
+                    break;
                 case FormMessageType.Refresh:
+                    RPCMessageManager.External.Send(message.To, MessageType.Refresh, message.Data.GetString(0));
                     break;
                 default:
                     break;
@@ -173,16 +166,24 @@ namespace Tangram.Core
         }
 
 
-        public IntPtr Handle => this.form.Handle;
-
-        public event FormEventCallback OnMessage;
-
-        [DllImport("user32.dll")]
-        private static extern int SetParent(IntPtr hWndChild, IntPtr hWndParent);
-
         public void Invoke(FormMessage message)
         {
-            this.OnMessage.Invoke(message);
+            this.OnMessage(message);
         }
+        const UInt32 SWP_SHOWWINDOW = 0x0040;
+        const UInt32 SWP_HIDEWINDOW = 0x0080;
+        [DllImport("user32.dll")]
+        private static extern int SetParent(IntPtr hWndChild, IntPtr hWndParent);
+        private void Form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var message = new FormMessage()
+            {
+                From = this.features.Get("name"),
+                To = this.features.Get("name"),
+                Type = FormMessageType.Close,
+            };
+            //this.OnMessage.Invoke(fm);
+        }
+
     }
 }

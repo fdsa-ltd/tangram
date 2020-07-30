@@ -4,28 +4,23 @@ using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Linq; 
+using System.Linq;
 
 namespace Tangram.Builtin
 {
     public partial class BuiltinForm : Form, IFormBrowser
     {
         #region ctor
-        protected Features features;
+
         public BuiltinForm()
         {
             this.OnMessage = new EventCallback(this.Window_EventCallback);
             Control.CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
         }
-        public virtual void Init(string name, string url, Features features)
-        {
-            this.Text = this.Name = name;
-            this.features = features;
-        }
-     
-        public  event EventCallback OnMessage;
 
+        public event EventCallback OnMessage;
+        public IntPtr GlobalHandle { get; private set; }
         protected override void WndProc(ref Message m)
         {
             var message = IPCMessageManager.GetFormMessage(m);
@@ -57,7 +52,7 @@ namespace Tangram.Builtin
                     else if (vPoint.Y >= ClientSize.Height - 5)
                         m.Result = (IntPtr)BOTTOM;
                     break;
-            
+
                 default:
                     base.WndProc(ref m);
                     break;
@@ -142,6 +137,8 @@ namespace Tangram.Builtin
                     this.exec(script);
                     break;
                 case MessageType.None:
+                    var handle = message.Data.GetString(0);
+                    this.GlobalHandle = Marshal.StringToHGlobalAnsi(handle);
                     break;
                 default:
                     break;
@@ -172,7 +169,7 @@ namespace Tangram.Builtin
             }
             catch (Exception ex)
             {
-                Log.WriteLog(string.Format("窗体：{0},调用方法：{1} 出错，具体如下：", this.Text, "IEBrowser.show()"), ex.ToString());
+                FileManager.Loger.WriteLog(string.Format("窗体：{0},调用方法：{1} 出错，具体如下：", this.Text, "IEBrowser.show()"), ex);
                 //todo this.OnMessage(this.Text, CallbackType.Error);
                 MessageBox.Show(ex.Message, "出错");
             }
@@ -251,7 +248,7 @@ namespace Tangram.Builtin
         public static extern bool ReleaseCapture();
         [DllImport("user32.dll")]
         public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
-       
+
         const int WM_SYSCOMMAND = 0x0112;
         const int WM_NCHITTEST = 0x0084;
         const int SC_MOVE = 0xF010;
@@ -309,6 +306,8 @@ namespace Tangram.Builtin
         private const int WM_PAINT = 0x000F;
         private const int WM_SIZE = 0x0005;
         private const int SWP_FRAMECHANGED = 0x0020;
+
+
 
         #endregion
     }

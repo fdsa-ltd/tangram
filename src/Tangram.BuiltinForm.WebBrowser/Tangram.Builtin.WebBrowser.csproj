@@ -13,7 +13,7 @@
     <Compile Remove="StoreForScript.cs" />
   </ItemGroup> 
   <ItemGroup>
-    <ProjectReference Include="..\Tangram.BuiltinForm\Tangram.Builtin.csproj" />
+    <ProjectReference Include="..\Tangram.Builtin\Tangram.Builtin.csproj" />
     <ProjectReference Include="..\Tangram.Core\Tangram.Core.csproj" />
   </ItemGroup>
 

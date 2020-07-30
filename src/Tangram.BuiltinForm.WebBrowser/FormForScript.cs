@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using Tangram.Core;
+using Tangram.Core.Event;
 
 namespace Tangram.Builtin.WebBrowser
 {
@@ -16,50 +17,51 @@ namespace Tangram.Builtin.WebBrowser
     [ComVisibleAttribute(true)]
     public class FormForScript
     {
-        private IFormBrowser form;
-        public FormForScript(IFormBrowser form)
+        private IntPtr formHandle;
+        public FormForScript(IntPtr formHandle)
         {
-            this.form = form;
+            this.formHandle = formHandle;
         }
         public FormForScript show(string parent)
         {
-            this.form.show(parent);
-            return new FormForScript(form);
+            IPCMessageManager.Send(this.formHandle, MessageType.Show, parent);
+            return new FormForScript(formHandle);
         }
         public FormForScript close()
         {
-            this.form.close();
-            return new FormForScript(form);
+            IPCMessageManager.Send(this.formHandle, MessageType.Close);
+
+            return new FormForScript(formHandle);
         }
         public FormForScript hide()
         {
-            this.form.hide();
-            return new FormForScript(form);
+            IPCMessageManager.Send(this.formHandle, MessageType.Hide);
+            return new FormForScript(formHandle);
         }
         public FormForScript size(int width, int height)
         {
-            this.form.size(width, height);
-            return new FormForScript(form);
+            IPCMessageManager.Send(this.formHandle, MessageType.Size, width, height);
+            return new FormForScript(formHandle);
         }
         public FormForScript site(int left, int top)
         {
-            this.form.site(left, top);
-            return new FormForScript(form);
+            IPCMessageManager.Send(this.formHandle, MessageType.Site, left, top);
+            return new FormForScript(formHandle);
         }
         public FormForScript refresh(string url)
         {
-            this.form.refresh(url);
-            return new FormForScript(form);
+            IPCMessageManager.Send(this.formHandle, MessageType.Refresh, url);
+            return new FormForScript(formHandle);
         }
         public FormForScript exec(string script, bool asyn = false)
         {
-            this.form.exec(script);
-            return new FormForScript(form);
+            IPCMessageManager.Send(this.formHandle, MessageType.Exec, script);
+            return new FormForScript(formHandle);
         }
         public FormForScript mode(int status)
         {
-            this.form.mode(status);
-            return new FormForScript(form);
+            IPCMessageManager.Send(this.formHandle, MessageType.Mode, status);
+            return new FormForScript(formHandle);
         }
     }
 

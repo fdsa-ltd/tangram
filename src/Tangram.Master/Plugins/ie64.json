@@ -1,6 +1,7 @@
 {
   "Name": "ie64",
-  "FileName": "D:\\Work\\CSharp\\tangram-screen-master\\src\\Tangram.WebBrowser64\\bin\\Debug\\WebBrowser64.exe",
+  "FileName": "Tangram.Builtin.WebBrowser.exe",
+  "Type": -1,
   "Arguments": [ "{url}" ]
 }
 
